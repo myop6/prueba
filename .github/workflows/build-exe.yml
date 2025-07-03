@@ -16,11 +16,10 @@ jobs:
       with:
         python-version: 3.10
 
-    - name: Install dependencies
+    - name: Install Pyinstaller and dependencies
       run: 
-        pip install pyinstaller
-        pip install -r requirements.txt
-
+        pip install pyinstaller pandas tkinter
+        
     - name: Build EXE
       run: pyinstaller --onefile --name=main "main.py"
 
