@@ -21,7 +21,7 @@ def main():
     '''
 
     while True:
-        opcion_seleccionada=input('Selecciona una opción \n 1.Obtener el nivel máximo de certificación \n 2.Tratar fichero de Nc (Combina lo textos de las NCs que tiene mismo equipo y fechas) \n 3.Tratar fichero de comentarios (Combina lo textos de los comentarios que tiene mismo equipo y fecha) \n '
+        opcion_seleccionada=input('Selecciona una opción \n 1.Obtener certificaciones \n 2.Tratar fichero de Nc (Combina lo textos de las NCs que tiene mismo equipo y fechas) \n 3.Tratar fichero de comentarios (Combina lo textos de los comentarios que tiene mismo equipo y fecha) \n '
                                   '4.Completo (Consolida en un fichero NCs y comentarios) \n 5.Completo rep\n 6.Salir\n Introduzca opción:>>>')
         #archivo_excel=input("Propocione dirección del fichero a tratar: ")
 
