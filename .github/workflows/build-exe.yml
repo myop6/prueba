@@ -1,6 +1,6 @@
 name: Build EXE for windows
 on:
-  Workflow_dispactch:
+  workflow_dispatch:
 
 jobs:
   build:
