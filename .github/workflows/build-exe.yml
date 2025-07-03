@@ -18,7 +18,7 @@ jobs:
 
     - name: Install Pyinstaller and dependencies
       run: 
-        pip install pyinstaller pandas tkinter
+        pip install pyinstaller pandas
         
     - name: Build EXE
       run: pyinstaller --onefile --name=main "main.py"
