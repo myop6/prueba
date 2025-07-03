@@ -21,7 +21,7 @@ jobs:
         pip install pyinstaller pandas
         
     - name: Build EXE
-      run: pyinstaller --onefile --name=main "main.py"
+      run: pyinstaller --onefile --name=main main.py
 
     - name: Upload EXE
       uses: actions/upload-artifact@v4
