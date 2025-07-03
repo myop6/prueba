@@ -23,9 +23,12 @@ jobs:
    - name: Build EXE
      run: pyinstaller --onefile --windowed --name=main main.py
 
+   - name: Mostrar archivos generados
+     run: dir dist
+     
    - name: Upload EXE
      uses: actions/upload-artifact@v4
      with:
-       mame: nc_exe
-       path: dist/nc.exe
+       mame: main_exe
+       path: dist/main.exe
       
