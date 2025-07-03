@@ -38,14 +38,14 @@ def tratar_certificaciones(archivo_excel):
     df_ascensores = df_filtrado[(df_filtrado['Certification Program'] == 'EI Service Technician Elevator') | (
             df_filtrado['Certification Program'] == 'Assistant Service Technician')]
     df_escaleras = df_filtrado[df_filtrado['Certification Program'] == 'EI Service Technician Escalator']
-    df_7000 = df_filtrado[df_filtrado['Certification Program']=='S7000']
+    df_S7000 = df_filtrado[df_filtrado['Certification Program']=='S7000']
 
     df_mqw_asc=df_filtrado[df_filtrado['Certification Program']=='Maintenance Quality Walk (MQW)- Elevator']
     df_mqw_esc=df_filtrado[df_filtrado['Certification Program']=='Maintenance Quality Walk (MQW)- Escalator']
 
     nivel_max_ascensores = df_ascensores.loc[df_ascensores.groupby('Personal ID')['Certification'].idxmax()]
     nivel_max_escaleras = df_escaleras.loc[df_escaleras.groupby('Personal ID')['Certification'].idxmax()]
-    nivel_max_s7000 = df_7000.loc[df_7000.groupby('Personal ID')['Certification'].idmax()]
+    nivel_max_S7000 = df_S7000.loc[df_S7000.groupby('Personal ID')['Certification'].idmax()]
 
     print("Seleccione ruta y nombre para el fichero con el resultado\n")
 
