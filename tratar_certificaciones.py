@@ -38,9 +38,14 @@ def tratar_certificaciones(archivo_excel):
     df_ascensores = df_filtrado[(df_filtrado['Certification Program'] == 'EI Service Technician Elevator') | (
             df_filtrado['Certification Program'] == 'Assistant Service Technician')]
     df_escaleras = df_filtrado[df_filtrado['Certification Program'] == 'EI Service Technician Escalator']
+    df_7000_df_filtrado[df_filtrado['Certification Program']=='S7000']
+
+    df_mqw_asc=df_filtrado[df_filtrado['Certification Program']=='Maintenance Quality Walk (MQW)- Elevator']
+    df_mqw_esc=df_filtrado[df_filtrado['Certification Program']=='Maintenance Quality Walk (MQW)- Escalator']
 
     nivel_max_ascensores = df_ascensores.loc[df_ascensores.groupby('Personal ID')['Certification'].idxmax()]
     nivel_max_escaleras = df_escaleras.loc[df_escaleras.groupby('Personal ID')['Certification'].idxmax()]
+    nivel_max_s7000=df_7000.loc[df_7000.groupby('Personal ID')['Certification'].idmax()]
 
     print("Seleccione ruta y nombre para el fichero con el resultado\n")
 
@@ -49,8 +54,11 @@ def tratar_certificaciones(archivo_excel):
 
     if nuevo_arhivo_excel:
         with pd.ExcelWriter(nuevo_arhivo_excel) as writer:
-            nivel_max_ascensores.to_excel(writer, sheet_name='hoja1', index=False)
-            nivel_max_escaleras.to_excel(writer, sheet_name='hoja2', index=False)
+            nivel_max_ascensores.to_excel(writer, sheet_name='Ascensores', index=False)
+            nivel_max_escaleras.to_excel(writer, sheet_name='Escaleras', index=False)
+            nivel_max_S7000.to_excel(writer, sheet_name='S7000', index=False)
+            df_mqw_asc.to_excel(writer, sheet_name='MQW_Asc', index=False)
+            df_mqw_esc.to_excel(writer, sheet_name='MQW_Esc', index=False)
     else:
         print('Guardado cancelado\n')
 
