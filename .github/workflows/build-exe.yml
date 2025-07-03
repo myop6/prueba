@@ -1,4 +1,5 @@
 name: Build EXE for windows
+
 on:
   workflow_dispatch:
 
