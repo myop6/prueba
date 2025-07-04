@@ -41,7 +41,7 @@ def tratar_certificaciones(archivo_excel):
     df_S7000 = df_filtrado[df_filtrado['Certification Program']=='S7000']
 
     df_mqw_asc=df_filtrado[df_filtrado['Certification Program']=='Maintenance Quality Walk (MQW)- Elevator']
-    df_mqw_esc=df_filtrado[df_filtrado['Certification Program']=='Maintenance Quality Walk (MQW)- Escalator']
+    df_mqw_esc=df_filtrado[df_filtrado['Certification Program']=='Maintenance Quality Walk (MQW)-Escalator']
 
     nivel_max_ascensores = df_ascensores.loc[df_ascensores.groupby('Personal ID')['Certification'].idxmax()]
     nivel_max_escaleras = df_escaleras.loc[df_escaleras.groupby('Personal ID')['Certification'].idxmax()]
