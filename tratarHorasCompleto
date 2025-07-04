@@ -4,20 +4,23 @@ from dateutil.relativedelta import relativedelta
 from openpyxl import load_workbook
 from openpyxl.styles import Font
 from openpyxl.formatting.rule import FormulaRule
-def tratarHorasCompleto (fichero, fichero1)
+
+
+def tratarHorasCompleto (fichero, fichero1):
+horasTratadas=tratarHoras(fichero)
 # ---------- 1. Cargar resumen 12 meses ----------
-resumen = pd.read_excel(fichero)
+resumen = pd.read_excel(horasTratadas)
 resumen.columns = resumen.columns.str.strip().str.lower()
 
 # ---------- 2. Cargar horas del mes actual ----------
 mes_actual = pd.read_excel(fichero1)
 mes_actual.columns = mes_actual.columns.str.strip().str.lower()
-mes_actual["actividad"] = mes_actual["actividad"].str.strip().str.lower()
+mes_actual["actividad"] = mes_actual["Activity"].str.strip().str.lower()
+mes_actual.rename(columns={"Nº Personal":"Id"}, inplace=True)
 
 # Crear columnas de tipo de actividad
-mes_actual["horas_mantenimiento"] = mes_actual["horas"].where(mes_actual["actividad"] == "mantenimiento", 0)
-mes_actual["horas_extensivo"] = mes_actual["horas"].where(mes_actual["actividad"] == "extensivo", 0)
-mes_actual["horas_cbk"] = mes_actual["horas"].where(mes_actual["actividad"].isin(["cbk1", "cbk2", "cbk3"]), 0)
+mes_actual["horas_mantenimiento"] = mes_actual["Cálculo horas"].where(mes_actual["actividad"] == "MNT", 0)
+mes_actual["horas_cbk"] = mes_actual["Cálculo horas"].where(mes_actual["actividad"].isin(["CBK"]), 0)
 
 # Agrupar por ID
 resumen_mes = mes_actual.groupby("id").agg({
