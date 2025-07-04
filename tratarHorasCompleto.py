@@ -9,92 +9,92 @@ from tratarHoras import tratarHoras
 
 
 def tratarHorasCompleto (fichero, fichero1,fichero2):
-horasTratadas=tratarHoras(fichero)
-# ---------- 1. Cargar resumen 12 meses ----------
-resumen = pd.read_excel(horasTratadas)
-resumen.columns = resumen.columns.str.strip().str.lower()
-
-# ---------- 2. Cargar horas del mes actual ----------
-mes_actual = pd.read_excel(fichero1)
-mes_actual.columns = mes_actual.columns.str.strip().str.lower()
-mes_actual["actividad"] = mes_actual["Activity"].str.strip().str.lower()
-mes_actual.rename(columns={"Nº Personal":"Id"}, inplace=True)
-
-# Crear columnas de tipo de actividad
-mes_actual["horas_mantenimiento"] = mes_actual["Cálculo horas"].where(mes_actual["actividad"] == "MNT", 0)
-mes_actual["horas_cbk"] = mes_actual["Cálculo horas"].where(mes_actual["actividad"].isin(["CBK"]), 0)
-
-# Agrupar por ID
-resumen_mes = mes_actual.groupby("Id").agg({
-    "horas_mantenimiento": "sum",
-        "horas_cbk": "sum"
-}).reset_index()
-
-# ---------- 3. Unir los resúmenes ----------
-final = pd.merge(resumen, resumen_mes, on="id", how="outer", suffixes=("_12meses", "_mes"))
-final = final.fillna(0)
-
-# Sumar totales
-final["horas_mantenimiento"] = final["horas_mantenimiento_12meses"] + final["horas_mantenimiento_mes"]
-final["horas_extensivo"] = final["horas_extensivo_12meses"] + final["horas_extensivo_mes"]
-final["horas_cbk"] = final["horas_cbk_12meses"] + final["horas_cbk_mes"]
-
-# Dejar solo columnas necesarias
-if "nombre" in final.columns:
-    final = final[["id", "nombre", "horas_mantenimiento", "horas_extensivo", "horas_cbk"]]
-else:
-    final = final[["id", "horas_mantenimiento", "horas_extensivo", "horas_cbk"]]
-
-# ---------- 4. Leer niveles de certificación ----------
-niveles = pd.read_excel(fichero2)
-niveles.columns = niveles.columns.str.strip().str.lower()
-niveles.rename(columns={"Personal ID":"Id"}, inplace=True)
-niveles.rename(columns={"Certification":"level"}, inplace=True)
-
-# Unir niveles
-final = pd.merge(final, niveles, on="Id", how="left")
-final["level"] = final["level"].fillna(0)
-
-# ---------- 5. Aplicar reglas de certificación ----------
-def verificar_nivel(row):
-    if row["horas_cbk"] > 3 and row["level"] < 2:
-        return "CBK SIN L2"
-    elif row["horas_extensivo"] > 3 and row["level"] < 1:
-        return "EXTENSIVO SIN L1"
-    elif row["horas_mantenimiento"]>1 and row["level"]<0:
-        return "MNT SIN L0"
+    horasTratadas=tratarHoras(fichero)
+    # ---------- 1. Cargar resumen 12 meses ----------
+    resumen = pd.read_excel(horasTratadas)
+    resumen.columns = resumen.columns.str.strip().str.lower()
+    
+    # ---------- 2. Cargar horas del mes actual ----------
+    mes_actual = pd.read_excel(fichero1)
+    mes_actual.columns = mes_actual.columns.str.strip().str.lower()
+    mes_actual["actividad"] = mes_actual["Activity"].str.strip().str.lower()
+    mes_actual.rename(columns={"Nº Personal":"Id"}, inplace=True)
+    
+    # Crear columnas de tipo de actividad
+    mes_actual["horas_mantenimiento"] = mes_actual["Cálculo horas"].where(mes_actual["actividad"] == "MNT", 0)
+    mes_actual["horas_cbk"] = mes_actual["Cálculo horas"].where(mes_actual["actividad"].isin(["CBK"]), 0)
+    
+    # Agrupar por ID
+    resumen_mes = mes_actual.groupby("Id").agg({
+        "horas_mantenimiento": "sum",
+            "horas_cbk": "sum"
+    }).reset_index()
+    
+    # ---------- 3. Unir los resúmenes ----------
+    final = pd.merge(resumen, resumen_mes, on="id", how="outer", suffixes=("_12meses", "_mes"))
+    final = final.fillna(0)
+    
+    # Sumar totales
+    final["horas_mantenimiento"] = final["horas_mantenimiento_12meses"] + final["horas_mantenimiento_mes"]
+    final["horas_extensivo"] = final["horas_extensivo_12meses"] + final["horas_extensivo_mes"]
+    final["horas_cbk"] = final["horas_cbk_12meses"] + final["horas_cbk_mes"]
+    
+    # Dejar solo columnas necesarias
+    if "nombre" in final.columns:
+        final = final[["id", "nombre", "horas_mantenimiento", "horas_extensivo", "horas_cbk"]]
     else:
-        return "OK"
-
-final["estado_certificacion"] = final.apply(verificar_nivel, axis=1)
-
-# ---------- 6. Guardar con formato condicional en Excel ----------
-ruta_salida = seleccionar_ruta()
-if not ruta_salida:
-    print("No se seleccionó ruta de salida")
-    exit()
-final.to_excel(ruta_salida, index=False)
-
-# Abrir con openpyxl y aplicar formato
-wb = load_workbook(ruta_salida)
-ws = wb.active
-
-# Buscar la columna de estado_certificacion
-for col in ws.iter_cols(1, ws.max_column):
-    if col[0].value == "estado_certificacion":
-        col_idx = col[0].column_letter
-        break
-
-# Regla: si contiene "sin", poner en rojo
-formula = f'ISNUMBER(SEARCH("sin", ${col_idx}2))'
-red_font = Font(color="9C0006")
-rule = FormulaRule(formula=[formula], font=red_font)
-
-# Aplicar formato desde fila 2 hasta el final
-ws.conditional_formatting.add(f"{col_idx}2:{col_idx}{ws.max_row}", rule)
-
-# Guardar archivo final
-wb.save(ruta_salida)
-
-print("Archivo guardado correctamente en:\{ruta_salida}")
-
+        final = final[["id", "horas_mantenimiento", "horas_extensivo", "horas_cbk"]]
+    
+    # ---------- 4. Leer niveles de certificación ----------
+    niveles = pd.read_excel(fichero2)
+    niveles.columns = niveles.columns.str.strip().str.lower()
+    niveles.rename(columns={"Personal ID":"Id"}, inplace=True)
+    niveles.rename(columns={"Certification":"level"}, inplace=True)
+    
+    # Unir niveles
+    final = pd.merge(final, niveles, on="Id", how="left")
+    final["level"] = final["level"].fillna(0)
+    
+    # ---------- 5. Aplicar reglas de certificación ----------
+    def verificar_nivel(row):
+        if row["horas_cbk"] > 3 and row["level"] < 2:
+            return "CBK SIN L2"
+        elif row["horas_extensivo"] > 3 and row["level"] < 1:
+            return "EXTENSIVO SIN L1"
+        elif row["horas_mantenimiento"]>1 and row["level"]<0:
+            return "MNT SIN L0"
+        else:
+            return "OK"
+    
+    final["estado_certificacion"] = final.apply(verificar_nivel, axis=1)
+    
+    # ---------- 6. Guardar con formato condicional en Excel ----------
+    ruta_salida = seleccionar_ruta()
+    if not ruta_salida:
+        print("No se seleccionó ruta de salida")
+        exit()
+    final.to_excel(ruta_salida, index=False)
+    
+    # Abrir con openpyxl y aplicar formato
+    wb = load_workbook(ruta_salida)
+    ws = wb.active
+    
+    # Buscar la columna de estado_certificacion
+    for col in ws.iter_cols(1, ws.max_column):
+        if col[0].value == "estado_certificacion":
+            col_idx = col[0].column_letter
+            break
+    
+    # Regla: si contiene "sin", poner en rojo
+    formula = f'ISNUMBER(SEARCH("sin", ${col_idx}2))'
+    red_font = Font(color="9C0006")
+    rule = FormulaRule(formula=[formula], font=red_font)
+    
+    # Aplicar formato desde fila 2 hasta el final
+    ws.conditional_formatting.add(f"{col_idx}2:{col_idx}{ws.max_row}", rule)
+    
+    # Guardar archivo final
+    wb.save(ruta_salida)
+    
+    print("Archivo guardado correctamente en:\{ruta_salida}")
+    
