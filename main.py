@@ -10,7 +10,9 @@ from tratar_certificaciones import tratar_certificaciones
 from tratar_nc import tratar_nc
 from tratar_comentarios import tratar_comentarios
 from completo_rep import completo_rep
+from tratarHoras import tratarHoras 
 from typing import Set
+
 
 def main():
 
@@ -59,6 +61,12 @@ def main():
             archivo_rep = seleccionar()
             print("Archivo abierto correctamente, ejecutando programa. Espere....\n")
             completo_rep(archivo_excel,archivo_rep)
+        elif opcion_seleccionada=='7':
+            imprimirVentana(opcion_seleccionada)
+            print("Busque y abra el fichero excel con las horas de cierre\n")
+            archivo_excel = seleccionar()
+            print("Archivo abierto correctamente, ejecutando programa. Espere....\n")
+            tratarHoras(archivo_excel) 
         elif opcion_seleccionada == '6':
             break
         else:
