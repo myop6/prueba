@@ -1,6 +1,7 @@
 import pandas as pd
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from tratarHoras import tratarHoras 
 
 def tratarHoras (fichero):
 
