@@ -33,7 +33,7 @@ def imprimirVentana(opcion_seleccionada):
         elif opcion_seleccionada == '6':
             messagebox.showinfo("Seleccione fichero", "Seleccione fichero con las horas de REP")
             root.destroy()
-        elif opcion_seleccionada == '7':
+        elif opcion_seleccionada == '8':
             messagebox.showinfo("Seleccione fichero", "Seleccione fichero con las horas de cierre de mes, las horas del mes en curso y la hoja de certificaciones, en este sentido")
             root.destroy()
             break
