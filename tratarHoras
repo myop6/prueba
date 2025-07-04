@@ -30,6 +30,6 @@ resumen = df_12m.groupby(["Id"]).apply(lambda x: pd.Series({
     "horas_cbk": x.loc[x["es_cbk"], "Hour quantity actual MTD/YTD"].sum()
 })).reset_index()
 
-# Guardar el resultado
-resumen.to_excel("horas_12_meses.xlsx", index=False)
+
+return resumen
 
