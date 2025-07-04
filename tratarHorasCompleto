@@ -67,7 +67,10 @@ def verificar_nivel(row):
 final["estado_certificacion"] = final.apply(verificar_nivel, axis=1)
 
 # ---------- 6. Guardar con formato condicional en Excel ----------
-ruta_salida = "resumen_final_con_certificacion.xlsx"
+ruta_salida = seleccionar_ruta()
+if not ruta_salida:
+    print("No se seleccionó ruta de salida")
+    exit()
 final.to_excel(ruta_salida, index=False)
 
 # Abrir con openpyxl y aplicar formato
@@ -90,3 +93,6 @@ ws.conditional_formatting.add(f"{col_idx}2:{col_idx}{ws.max_row}", rule)
 
 # Guardar archivo final
 wb.save(ruta_salida)
+
+print("Archivo guardado correctamente en:\{ruta_salida}")
+
