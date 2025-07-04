@@ -6,7 +6,7 @@ from openpyxl.styles import Font
 from openpyxl.formatting.rule import FormulaRule
 
 
-def tratarHorasCompleto (fichero, fichero1):
+def tratarHorasCompleto (fichero, fichero1,fichero2):
 horasTratadas=tratarHoras(fichero)
 # ---------- 1. Cargar resumen 12 meses ----------
 resumen = pd.read_excel(horasTratadas)
@@ -23,10 +23,9 @@ mes_actual["horas_mantenimiento"] = mes_actual["Cálculo horas"].where(mes_actua
 mes_actual["horas_cbk"] = mes_actual["Cálculo horas"].where(mes_actual["actividad"].isin(["CBK"]), 0)
 
 # Agrupar por ID
-resumen_mes = mes_actual.groupby("id").agg({
+resumen_mes = mes_actual.groupby("Id").agg({
     "horas_mantenimiento": "sum",
-    "horas_extensivo": "sum",
-    "horas_cbk": "sum"
+        "horas_cbk": "sum"
 }).reset_index()
 
 # ---------- 3. Unir los resúmenes ----------
@@ -45,21 +44,25 @@ else:
     final = final[["id", "horas_mantenimiento", "horas_extensivo", "horas_cbk"]]
 
 # ---------- 4. Leer niveles de certificación ----------
-niveles = pd.read_excel("niveles.xlsx")
+niveles = pd.read_excel(fichero2)
 niveles.columns = niveles.columns.str.strip().str.lower()
+niveles.rename(columns={"Personal ID":"Id"}, inplace=True)
+niveles.rename(columns={"Certification":"level"}, inplace=True)
 
 # Unir niveles
-final = pd.merge(final, niveles, on="id", how="left")
+final = pd.merge(final, niveles, on="Id", how="left")
 final["level"] = final["level"].fillna(0)
 
 # ---------- 5. Aplicar reglas de certificación ----------
 def verificar_nivel(row):
     if row["horas_cbk"] > 3 and row["level"] < 2:
-        return "cbk sin 2"
+        return "CBK SIN L2"
     elif row["horas_extensivo"] > 3 and row["level"] < 1:
-        return "extensivo sin 1"
+        return "EXTENSIVO SIN L1"
+    elif row["horas_mantenimiento"]>1 and row["level"]<0:
+        return "MNT SIN L0"
     else:
-        return "ok"
+        return "OK"
 
 final["estado_certificacion"] = final.apply(verificar_nivel, axis=1)
 
