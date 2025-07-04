@@ -64,9 +64,13 @@ def main():
         elif opcion_seleccionada=='7':
             imprimirVentana(opcion_seleccionada)
             print("Busque y abra el fichero excel con las horas de cierre\n")
-            archivo_excel = seleccionar()
-            print("Archivo abierto correctamente, ejecutando programa. Espere....\n")
-            tratarHoras(archivo_excel) 
+            horasCierre = seleccionar()
+            print("Busque y abra el fichero excel con las horas de cierre\n")
+            horasMes = seleccionar()
+            print("Busque y abra el fichero excel con las horas de cierre\n")
+            certificacion = seleccionar()
+            print("Archivos abiertos correctamente, ejecutando programa. Espere....\n")
+            tratarHorasCompleto(horasCierre,horasMes,certificacion) 
         elif opcion_seleccionada == '6':
             break
         else:
