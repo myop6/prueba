@@ -71,7 +71,7 @@ def main():
             certificacion = seleccionar()
             print("Archivos abiertos correctamente, ejecutando programa. Espere....\n")
             tratarHorasCompleto(horasCierre,horasMes,certificacion) 
-        elif opcion_seleccionada == '6':
+        elif opcion_seleccionada == '8':
             break
         else:
             print('Error')
