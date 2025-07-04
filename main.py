@@ -10,7 +10,8 @@ from tratar_certificaciones import tratar_certificaciones
 from tratar_nc import tratar_nc
 from tratar_comentarios import tratar_comentarios
 from completo_rep import completo_rep
-from tratarHoras import tratarHoras 
+from tratarHoras import tratarHoras
+from tratarHorasCompleto import tratarHorasCompleto
 from typing import Set
 
 
