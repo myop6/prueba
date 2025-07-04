@@ -5,7 +5,7 @@ from openpyxl import load_workbook
 from openpyxl.styles import Font
 from openpyxl.formatting.rule import FormulaRule
 from tratarHoras import tratarHoras
-from tratarHorasCompleto import tratarHorasCompleto
+
 
 
 def tratarHorasCompleto (fichero, fichero1,fichero2):
