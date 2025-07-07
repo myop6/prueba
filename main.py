@@ -1,6 +1,5 @@
 import pandas as pd
 import config
-import warnings 
 
 from completo import completo
 from imprimirVentana import imprimirVentana
@@ -14,7 +13,6 @@ from tratarHoras import tratarHoras
 from tratarHorasCompleto import tratarHorasCompleto
 from typing import Set
 
-warnings.filterwarnings('ignore')
 
 def main():
 
@@ -73,12 +71,6 @@ def main():
             break
         else:
             print('Error')
-
-
-
-if __name__=="__main__":
-
-    main()
 
 
 

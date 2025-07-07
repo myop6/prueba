@@ -69,9 +69,9 @@ def tratarHorasCompleto (fichero, fichero1,fichero2,fichero3,opcion_seleccionada
     final['level']=final['level'].astype(int)
     # ---------- 5. Aplicar reglas de certificación ----------
     def verificar_nivel(row):
-        if (row["horas_cbk"] > 5 ||row["horas_cbk_mes"] >1)and row["level"] < 2:
+        if row["horas_cbk"] > 3 and row["level"] < 2:
             return "CBK SIN L2"
-        elif (row["horas_extensivo"] > 3 ||row["horas_extensivo_mes"] >1)and row["level"] < 1:
+        elif row["horas_extensivo"] > 3 and row["level"] < 1:
             return "EXTENSIVO SIN L1"
         elif row["horas_mantenimiento"] > 1 and row["level"] < 0:
             return "MNT SIN L0"
