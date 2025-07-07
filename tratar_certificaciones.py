@@ -7,7 +7,7 @@ from seleccionar_ruta import seleccionar_ruta
 def tratar_certificaciones(archivo_excel,opcion_seleccionada):
 
     print("Filtrando y ordenando certificaciones\n")
-    df = pd.read_excel(archivo_excel)
+    df = pd.read_excel(archivo_excel,header=1)
     df_filtrado = df[df['Status'] == 'Certified']
 
     def sustituir(cadena):
