@@ -1,11 +1,10 @@
-# This is a sample Python script.
-
 import pandas as pd
-
+import config
 
 from completo import completo
 from imprimirVentana import imprimirVentana
 from seleccionar import seleccionar
+from tratarHorasEscaleras import tratarHorasEscaleras
 from tratar_certificaciones import tratar_certificaciones
 from tratar_nc import tratar_nc
 from tratar_comentarios import tratar_comentarios
@@ -24,28 +23,36 @@ def main():
     '''
 
     while True:
-        opcion_seleccionada=input('Selecciona una opción \n 1.Obtener certificaciones \n 2.Tratar fichero de Nc (Combina lo textos de las NCs que tiene mismo equipo y fechas) \n 3.Tratar fichero de comentarios (Combina lo textos de los comentarios que tiene mismo equipo y fecha) \n '
-                                  '4.Completo (Consolida en un fichero NCs y comentarios) \n 5.Completo rep\n 6.Salir\n Introduzca opción:>>>')
+
+        opcion_seleccionada=input('Selecciona una opción \n 1.Obtener certificaciones \n 2.Incumplimientos certificación ascensores \n 3.Incumplimientos certificación escaleras \n '
+                                  '4.Gestión NCs - Completo (Consolida en un fichero NCs y comentarios) \n 5.Gestión NCs - Completo con rep\n 6.Salir\n Introduzca opción:>>>')
         #archivo_excel=input("Propocione dirección del fichero a tratar: ")
 
         if opcion_seleccionada=='1':
-            imprimirVentana(opcion_seleccionada)
             print("Busque y abra el fichero excel con las certificaciones\n")
             archivo_excel = seleccionar()
             print("Archivo abierto correctamente, ejecutando programa. Espere....\n")
-            tratar_certificaciones(archivo_excel)
-        elif opcion_seleccionada=='2':
-            imprimirVentana(opcion_seleccionada)
-            print("Busque y abra el fichero excel con las NCs\n")
-            archivo_excel = seleccionar()
-            print("Archivo abierto correctamente, ejecutando programa. Espere....\n")
-            tratar_nc(archivo_excel)
+            tratar_certificaciones(archivo_excel,opcion_seleccionada)
+        elif opcion_seleccionada == '2':
+            print("Seleccione el fichero excel con las horas de cierre de mes\n")
+            fichero = seleccionar()
+            print("Seleccione el fichero excel con las horas del mes en curso\n")
+            horasMes = seleccionar()
+            print("Seleccione el fichero excel con las certificaciones\n")
+            certificacion = seleccionar()
+            print("Seleccione el fichero excel del personal\n")
+            personal= seleccionar()
+            print("Archivos abiertos correctamente, ejecutando programa. Espere....\n")
+            tratarHorasCompleto(fichero, horasMes, certificacion,personal,opcion_seleccionada)
         elif opcion_seleccionada == '3':
-            imprimirVentana(opcion_seleccionada)
-            print("Busque y abre el fichero excel con las NCs\n")
-            archivo_excel = seleccionar()
-            print("Archivo abierto correctamente, ejecutando programa. Espere....\n")
-            tratar_comentarios(archivo_excel)
+            print("Seleccione el fichero excel con las horas de cierre de mes en escaleras \n")
+            fichero = seleccionar()
+            print("Seleccione el fichero excel con las certificaciones \n")
+            certificacion = seleccionar()
+            print("Seleccione el fichero excel del personal\n")
+            personal = seleccionar()
+            print("Archivos abiertos correctamente, ejecutando programa. Espere....\n")
+            tratarHorasEscaleras(fichero, certificacion, personal, opcion_seleccionada)
         elif opcion_seleccionada == '4':
             imprimirVentana(opcion_seleccionada)
             print("Busque y abre el fichero excel con las NCs\n")
@@ -53,29 +60,23 @@ def main():
             print("Archivo abierto correctamente, ejecutando programa. Espere....\n")
             completo(archivo_excel)
         elif opcion_seleccionada == '5':
-            imprimirVentana(opcion_seleccionada)
             print("Busque y abre el fichero excel con las NCs\n")
             archivo_excel = seleccionar()
             opcion_seleccionada = '6'
             print("Abierto correctamenete, ahora seleccione el fichero con los parte de reparación\n")
-            imprimirVentana(opcion_seleccionada)
             archivo_rep = seleccionar()
             print("Archivo abierto correctamente, ejecutando programa. Espere....\n")
             completo_rep(archivo_excel,archivo_rep)
-        elif opcion_seleccionada=='7':
-            imprimirVentana(opcion_seleccionada)
-            print("Busque y abra el fichero excel con las horas de cierre\n")
-            horasCierre = seleccionar()
-            print("Busque y abra el fichero excel con las horas del mes en curso\n")
-            horasMes = seleccionar()
-            print("Busque y abra el fichero excel con las certificaciones\n")
-            certificacion = seleccionar()
-            print("Archivos abiertos correctamente, ejecutando programa. Espere....\n")
-            tratarHorasCompleto(horasCierre,horasMes,certificacion) 
-        elif opcion_seleccionada == '8':
+        elif opcion_seleccionada == '6':
             break
         else:
             print('Error')
+
+
+
+if __name__=="__main__":
+
+    main()
 
 
 
