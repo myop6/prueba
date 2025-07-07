@@ -54,20 +54,35 @@ def main():
             print("Archivos abiertos correctamente, ejecutando programa. Espere....\n")
             tratarHorasEscaleras(fichero, certificacion, personal, opcion_seleccionada)
         elif opcion_seleccionada == '4':
+            print("Seleccione el fichero excel con las horas en ascensores de cierre de mes \n")
+            fichero = seleccionar()
+            print("Seleccione el fichero excel con las horas en ascensores del mes en curso\n")
+            horasMesAsc = seleccionar()
+            print("Seleccione el fichero excel con las horas en escaleras de cierre de mes \n")
+            horasEscaleras = seleccionar()
+            print("Seleccione el fichero excel con las horas en escaleras del mes en curso\n")
+            horasMesEsc = seleccionar()
+            print("Seleccione el fichero excel con las certificaciones\n")
+            certificacion = seleccionar()
+            print("Seleccione el fichero excel del personal\n")
+            personal= seleccionar()
+            print("Archivos abiertos correctamente, ejecutando programa. Espere....\n")
+            tratarHorasCompleto1(fichero, horasMesAsc,horasEscaleras,horasMesEsc, certificacion,personal,opcion_seleccionada)
+        elif opcion_seleccionada == '5':
             imprimirVentana(opcion_seleccionada)
             print("Busque y abre el fichero excel con las NCs\n")
             archivo_excel = seleccionar()
             print("Archivo abierto correctamente, ejecutando programa. Espere....\n")
             completo(archivo_excel)
-        elif opcion_seleccionada == '5':
+        elif opcion_seleccionada == '6':
             print("Busque y abre el fichero excel con las NCs\n")
             archivo_excel = seleccionar()
-            opcion_seleccionada = '6'
+            opcion_seleccionada = '7'
             print("Abierto correctamenete, ahora seleccione el fichero con los parte de reparación\n")
             archivo_rep = seleccionar()
             print("Archivo abierto correctamente, ejecutando programa. Espere....\n")
             completo_rep(archivo_excel,archivo_rep)
-        elif opcion_seleccionada == '6':
+        elif opcion_seleccionada == '7':
             break
         else:
             print('Error')
