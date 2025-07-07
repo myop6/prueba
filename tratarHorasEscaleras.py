@@ -81,9 +81,9 @@ def tratarHorasEscaleras(fichero,fichero1, fichero3, opcion_seleccionada):
 
     # ---------- 5. Aplicar reglas de certificación ----------
     def verificar_nivel(row):
-        if (row["horas_cbk"] > 5 ||row["horas_cbk_mes"]>1) and row["level"] < 2:
+        if (row["horas_cbk"] > 5 || row["horas_cbk_mes"]>1) and row["level"] < 2:
             return "CBK SIN S2"
-        elif (row["horas_mantenimiento"] > 5 || row["horas_mantenimiento_mes"]>1) and row["level"] < 0:
+        elif (row["horas_mantenimiento"] > 5 || row["horas_mantenimientos_mes"]>1) and row["level"] < 0:
             return "MNT SIN S1"
         else:
             return "OK"
@@ -95,8 +95,7 @@ def tratarHorasEscaleras(fichero,fichero1, fichero3, opcion_seleccionada):
     superPa = pd.read_excel(fichero3)
     superPa.rename(columns={"User/Employee ID": "id"}, inplace=True)
     superPa.columns = superPa.columns.str.strip().str.lower()
-    superPafiltrado = superPa[
-        ["id", "job title", "job name", "manager user sys id", "supervisor", "do", "dr (dirección regional)",
+    superPafiltrado = superPa[["id", "job title", "job name", "manager user sys id", "supervisor", "do", "dr (dirección regional)",
          "sucursal"]]
 
     final_completo = pd.merge(final, superPafiltrado, on="id", how="left")
