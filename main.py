@@ -14,7 +14,7 @@ from tratarHoras import tratarHoras
 from tratarHorasCompleto import tratarHorasCompleto
 from typing import Set
 
-warnings.filerwarnings('ignore')
+warnings.filterwarnings('ignore')
 
 def main():
 
