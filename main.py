@@ -12,6 +12,7 @@ from completo_rep import completo_rep
 from tratarHoras import tratarHoras
 from tratarHorasCompleto import tratarHorasCompleto
 from typing import Set
+from tratarHorasCompleto1 import tratarHorasCompleto1
 
 
 def main():
