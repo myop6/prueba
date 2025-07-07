@@ -48,13 +48,14 @@ def tratarHorasEscaleras(fichero,fichero1, fichero3, opcion_seleccionada):
     mes_actual["horas_mantenimiento"] = mes_actual["cálculo horas"].where(mes_actual["activity"] == "MNT", 0)
     mes_actual["horas_cbk"] = mes_actual["cálculo horas"].where(mes_actual["activity"].isin(["CBK"]), 0)
 
-
+    
     # Agrupar por ID
     resumen_mes = mes_actual.groupby("id").agg({
         "horas_mantenimiento": "sum",
         "horas_cbk": "sum",
         }).reset_index()
 
+    
     # ---------- 3. Unir los resúmenes ----------
     final = pd.merge(df, resumen_mes, on="id", how="outer", suffixes=("_12meses", "_mes"))
     final = final.fillna(0)
@@ -63,6 +64,7 @@ def tratarHorasEscaleras(fichero,fichero1, fichero3, opcion_seleccionada):
     final["horas_mantenimiento"] = final["horas_mantenimiento_12meses"] + final["horas_mantenimiento_mes"]
     final["horas_cbk"] = final["horas_cbk_12meses"] + final["horas_cbk_mes"]
 
+    
     # ---------- 4. Leer niveles de certificación ----------
     config.variable=2
     niveles= tratar_certificaciones(fichero1,opcion_seleccionada)
@@ -95,8 +97,7 @@ def tratarHorasEscaleras(fichero,fichero1, fichero3, opcion_seleccionada):
     superPa = pd.read_excel(fichero3)
     superPa.rename(columns={"User/Employee ID": "id"}, inplace=True)
     superPa.columns = superPa.columns.str.strip().str.lower()
-    superPafiltrado = superPa[
-        ["id", "job title", "job name", "manager user sys id", "supervisor", "do", "dr (dirección regional)",
+    superPafiltrado = superPa[["id", "job title", "job name", "manager user sys id", "supervisor", "do", "dr (dirección regional)",
          "sucursal"]]
 
     final_completo = pd.merge(final, superPafiltrado, on="id", how="left")
