@@ -87,7 +87,8 @@ def main():
         elif opcion_seleccionada == '7':
             break
         elif opcion_seleccionada==0:
-            contar()
+            cantidad=int(input("Cuántos segundos?"))
+            contar(cantidad)
         else:
             print('Error')
 
