@@ -10,6 +10,9 @@ from openpyxl.formatting.rule import FormulaRule
 from seleccionar_ruta import seleccionar_ruta
 from tratarHoras import tratarHoras
 from tratar_certificaciones import tratar_certificaciones
+from tratarHorasCompleto import tratarHorasCompleto
+from tratarHorasEscaleras import tratarHorasEscaleras
+
 
 def tratarHorasCompleto1(fichero, horasMesAsc,horasEscaleras,horasMesEsc, certificacion,personal,opcion_seleccionada):
 
