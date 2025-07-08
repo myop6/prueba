@@ -102,6 +102,10 @@ def tratarHorasEscaleras(fichero,fichero1, fichero3, opcion_seleccionada):
 
     final_completo = pd.merge(final, superPafiltrado, on="id", how="left")
 
+     if variable==2:
+        return final_completo
+        break()
+         
     print("Fichero con incumplimientos de certificación creado exitosamennte, seleccione nombre y ubicación ")
     # ---------- 6. Guardar con formato condicional en Excel ----------
     ruta_salida = seleccionar_ruta()
