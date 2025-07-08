@@ -86,7 +86,7 @@ def main():
             completo_rep(archivo_excel,archivo_rep)
         elif opcion_seleccionada == '7':
             break
-        elif opcion_seleccionada==0:
+        elif opcion_seleccionada=='0':
             cantidad=int(input("Cuántos segundos?"))
             contar(cantidad)
         else:
