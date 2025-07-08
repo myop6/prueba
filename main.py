@@ -87,7 +87,7 @@ def main():
         elif opcion_seleccionada == '7':
             break
         elif opcion_seleccionada =='0':
-            cantidad=int(input("Cantidad")
+            cantidad=int(input("Cantidad"))
             contar(cantidad)
         else:
             print('Error')
