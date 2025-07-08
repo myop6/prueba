@@ -85,7 +85,7 @@ def tratarHorasCompleto (fichero, fichero1,fichero2,fichero3,opcion_seleccionada
     superPa=pd.read_excel(fichero3)
     superPa.rename(columns={"User/Employee ID":"id"}, inplace=True)
     superPa.columns=superPa.columns.str.strip().str.lower()
-    superPafiltrado=superPa[["id","job title","job name","manager user sys id","supervisor","do","dr (dirección regional)","sucursal"]]
+    superPafiltrado=superPa[["id","nombre completo","job title","job name","manager user sys id","supervisor","do","dr (dirección regional)","sucursal"]]
 
     final_completo=pd.merge(final,superPafiltrado,on="id", how="left")
 
