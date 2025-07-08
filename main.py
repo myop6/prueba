@@ -14,7 +14,7 @@ from tratarHoras import tratarHoras
 from tratarHorasCompleto import tratarHorasCompleto
 from typing import Set
 from incumplimientosCompleto import incumplimientosCompleto
-froma contar impot contar 
+from contar import contar 
 
 warnings.filterwarnings('ignore')
 
