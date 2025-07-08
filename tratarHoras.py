@@ -49,9 +49,10 @@ def tratarHoras (fichero,opcion_seleccionada):
     fecha_corte = datetime.today() - relativedelta(months=12)
     df_12m = df[df["fecha"] >= fecha_corte]
 
+    '''
     print(f"📅 Fecha de corte: {fecha_corte.strftime('%Y-%m-%d')}")
     print(f"📊 Filas antes del filtro: {len(df)}")
-    print(f"📉 Filas después del filtro: {len(df_12m)}")
+    print(f"📉 Filas después del filtro: {len(df_12m)}")'''
 
     # ---------- 5. Normalizar columnas ----------
     df_12m["actividad"] = df_12m["actividad"].astype(str).str.strip().str.lower()
