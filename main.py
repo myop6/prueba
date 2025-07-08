@@ -1,5 +1,6 @@
 import pandas as pd
 import config
+import warnings
 
 from completo import completo
 from imprimirVentana import imprimirVentana
@@ -14,6 +15,7 @@ from tratarHorasCompleto import tratarHorasCompleto
 from typing import Set
 from tratarHorasCompleto1 import tratarHorasCompleto1
 
+warnings.filterwarnings("ignore")
 
 def main():
 
