@@ -15,7 +15,7 @@ def tratarHorasCompleto1(fichero, horasMesAsc,horasEscaleras,horasMesEsc, certif
 
   variable1=1;
   ascensores=tratarHorasCompleto(fichero, horasMesAsc,certificacion,personal,opcion_seleccionada)
-  variable=2
+  variable1=2
   escaleras=tratarHorasEscaleras(HorasEscaleras,HorasMesEsc,certificacion,personal,opcion_seleccionada)
 
 
