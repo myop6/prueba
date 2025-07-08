@@ -1,10 +1,8 @@
 import time
 
-def contar(segundos):
-    for i in range(1,segundos+1):
-      print(f"segundo {i})
-      time.sleep(1)
-   
-    print("Contador terminado")
+def contar(cantidad):
+    for i in range (1,cantidad+1):
+        print(f"Segundo {i}")
+        time.sleep(1)
 
-  
+print("Contador terminado")

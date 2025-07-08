@@ -14,7 +14,7 @@ from tratarHoras import tratarHoras
 from tratarHorasCompleto import tratarHorasCompleto
 from typing import Set
 from incumplimientosCompleto import incumplimientosCompleto
-from contar import contar 
+from contar import contar
 
 warnings.filterwarnings('ignore')
 
@@ -87,7 +87,7 @@ def main():
         elif opcion_seleccionada == '7':
             break
         elif opcion_seleccionada =='0':
-            cantidad=int(input("Cantidad"))
+            cantidad=int(input("Seleccione cantidad"))
             contar(cantidad)
         else:
             print('Error')
