@@ -11,6 +11,12 @@ from seleccionar_ruta import seleccionar_ruta
 from tratarHoras import tratarHoras
 from tratar_certificaciones import tratar_certificaciones
 
-def tratarHorasCompleto1:
+def tratarHorasCompleto1():
+
+  variable1=1;
+  ascensores=tratarHorasCompleto()
+  variable=2
+  escaleras=tratarHorasEscaleras()
+
 
   
