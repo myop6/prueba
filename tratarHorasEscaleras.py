@@ -48,14 +48,13 @@ def tratarHorasEscaleras(fichero,fichero1, fichero3, opcion_seleccionada):
     mes_actual["horas_mantenimiento"] = mes_actual["cálculo horas"].where(mes_actual["activity"] == "MNT", 0)
     mes_actual["horas_cbk"] = mes_actual["cálculo horas"].where(mes_actual["activity"].isin(["CBK"]), 0)
 
-    
+
     # Agrupar por ID
     resumen_mes = mes_actual.groupby("id").agg({
         "horas_mantenimiento": "sum",
         "horas_cbk": "sum",
         }).reset_index()
 
-    
     # ---------- 3. Unir los resúmenes ----------
     final = pd.merge(df, resumen_mes, on="id", how="outer", suffixes=("_12meses", "_mes"))
     final = final.fillna(0)
@@ -64,7 +63,6 @@ def tratarHorasEscaleras(fichero,fichero1, fichero3, opcion_seleccionada):
     final["horas_mantenimiento"] = final["horas_mantenimiento_12meses"] + final["horas_mantenimiento_mes"]
     final["horas_cbk"] = final["horas_cbk_12meses"] + final["horas_cbk_mes"]
 
-    
     # ---------- 4. Leer niveles de certificación ----------
     config.variable=2
     niveles= tratar_certificaciones(fichero1,opcion_seleccionada)
@@ -83,9 +81,9 @@ def tratarHorasEscaleras(fichero,fichero1, fichero3, opcion_seleccionada):
 
     # ---------- 5. Aplicar reglas de certificación ----------
     def verificar_nivel(row):
-        if (row["horas_cbk"] > 3 || row["horas_cbk_mes"]>1) and row["level"] < 2:
+        if row["horas_cbk"] > 3 and row["level"] < 2:
             return "CBK SIN S2"
-        elif (row["horas_mantenimiento"] > 5 || row["horas_mantenimiento_mes"]>1) and row["level"] < 0:
+        elif row["horas_mantenimiento"] > 1 and row["level"] < 0:
             return "MNT SIN S1"
         else:
             return "OK"
@@ -97,15 +95,18 @@ def tratarHorasEscaleras(fichero,fichero1, fichero3, opcion_seleccionada):
     superPa = pd.read_excel(fichero3)
     superPa.rename(columns={"User/Employee ID": "id"}, inplace=True)
     superPa.columns = superPa.columns.str.strip().str.lower()
-    superPafiltrado = superPa[["id", "job title", "job name", "manager user sys id", "supervisor", "do", "dr (dirección regional)",
+    superPafiltrado = superPa[["id", "nombre completo","job title", "job name", "manager user sys id", "supervisor", "do", "dr (dirección regional)",
          "sucursal"]]
 
     final_completo = pd.merge(final, superPafiltrado, on="id", how="left")
 
-     if config.variable1==2:
+    columnas_ordenadas=["id","nombre completo","job title","job name","horas_mantenimiento_12meses","horas_cbk_12meses","horas_mantenimiento_mes","horas_cbk_mes","manager user sys id","supervisor","do","dr (dirección regional)","sucursal"]
+    final_completo=final_completo[columnas_ordenadas]
+
+    if config.variable1==2:
         return final_completo
-        break()
-         
+
+
     print("Fichero con incumplimientos de certificación creado exitosamennte, seleccione nombre y ubicación ")
     # ---------- 6. Guardar con formato condicional en Excel ----------
     ruta_salida = seleccionar_ruta()

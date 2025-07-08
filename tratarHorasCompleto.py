@@ -10,7 +10,6 @@ from openpyxl.formatting.rule import FormulaRule
 from seleccionar_ruta import seleccionar_ruta
 from tratarHoras import tratarHoras
 from tratar_certificaciones import tratar_certificaciones
-from tratarHorasEscaleras import tratarHorasEscaleras
 
 
 def tratarHorasCompleto (fichero, fichero1,fichero2,fichero3,opcion_seleccionada):
@@ -52,7 +51,7 @@ def tratarHorasCompleto (fichero, fichero1,fichero2,fichero3,opcion_seleccionada
     final["horas_mantenimiento"] = final["horas_mantenimiento_12meses"] + final["horas_mantenimiento_mes"]
     final["horas_extensivo"] = final["horas_extensivo_12meses"] + final["horas_extensivo_mes"]
     final["horas_cbk"] = final["horas_cbk_12meses"] + final["horas_cbk_mes"]
-
+        
     config.variable = 1
     # ---------- 4. Leer niveles de certificación ----------
     niveles=tratar_certificaciones(fichero2,opcion_seleccionada)
@@ -70,11 +69,11 @@ def tratarHorasCompleto (fichero, fichero1,fichero2,fichero3,opcion_seleccionada
     final['level']=final['level'].astype(int)
     # ---------- 5. Aplicar reglas de certificación ----------
     def verificar_nivel(row):
-        if (row["horas_cbk"] > 5 || row["horas_cbk_mes"]>1) and row["level"] < 2:
+        if row["horas_cbk"] > 3 and row["level"] < 2:
             return "CBK SIN L2"
-        elif row["horas_extensivo"] > 5 and row["level"] < 1:
+        elif row["horas_extensivo"] > 3 and row["level"] < 1:
             return "EXTENSIVO SIN L1"
-        elif row["horas_mantenimiento"] > 5 and row["level"] < 0:
+        elif row["horas_mantenimiento"] > 1 and row["level"] < 0:
             return "MNT SIN L0"
         else:
             return "OK"
@@ -90,12 +89,13 @@ def tratarHorasCompleto (fichero, fichero1,fichero2,fichero3,opcion_seleccionada
 
     final_completo=pd.merge(final,superPafiltrado,on="id", how="left")
 
-    print("Fichero con incumplimientos de certificación creado exitosamennte, seleccione nombre y ubicación ")
+    columnas_ordenadas=["id","nombre completo","job title","job name","horas_mantenimiento_12meses","horas_extensivo_12meses","horas_cbk_12meses","horas_mantenimiento_mes","horas_extensivo_mes","horas_cbk_mes","manager user sys id","supervisor","do","dr (dirección regional)","sucursal"]
+    final_completo=final_completo[columnas_ordenadas]
 
-    if config.variable1==1:
+    if config.variable1 == 1:
         return final_completo
-        break()
-    
+
+    print("Fichero con incumplimientos de certificación creado exitosamennte, seleccione nombre y ubicación ")
     # ---------- 6. Guardar con formato condicional en Excel ----------
     ruta_salida = seleccionar_ruta()
     if not ruta_salida:

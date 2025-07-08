@@ -13,9 +13,9 @@ from completo_rep import completo_rep
 from tratarHoras import tratarHoras
 from tratarHorasCompleto import tratarHorasCompleto
 from typing import Set
-from tratarHorasCompleto1 import tratarHorasCompleto1
+from incumplimientosCompleto import incumplimientosCompleto
 
-warnings.filterwarnings("ignore")
+warnings.filterwarnings('ignore')
 
 def main():
 
@@ -28,7 +28,7 @@ def main():
     while True:
 
         opcion_seleccionada=input('Selecciona una opción \n 1.Obtener certificaciones \n 2.Incumplimientos certificación ascensores \n 3.Incumplimientos certificación escaleras \n '
-                                  '4.Gestión NCs - Completo (Consolida en un fichero NCs y comentarios) \n 5.Gestión NCs - Completo con rep\n 6.Salir\n Introduzca opción:>>>')
+                                  '4.Incumplimientos certificación completo \n 5.Gestión NCs - Completo (Consolida en un fichero NCs y comentarios) \n 6.Gestión NCs - Completo con rep\n 7.Salir\n Introduzca opción:>>>')
         #archivo_excel=input("Propocione dirección del fichero a tratar: ")
 
         if opcion_seleccionada=='1':
@@ -37,9 +37,9 @@ def main():
             print("Archivo abierto correctamente, ejecutando programa. Espere....\n")
             tratar_certificaciones(archivo_excel,opcion_seleccionada)
         elif opcion_seleccionada == '2':
-            print("Seleccione el fichero excel con las horas de cierre de mes\n")
+            print("Seleccione el fichero excel con las horas en ascensores de cierre de mes \n")
             fichero = seleccionar()
-            print("Seleccione el fichero excel con las horas del mes en curso\n")
+            print("Seleccione el fichero excel con las horas en ascensores del mes en curso\n")
             horasMes = seleccionar()
             print("Seleccione el fichero excel con las certificaciones\n")
             certificacion = seleccionar()
@@ -48,7 +48,7 @@ def main():
             print("Archivos abiertos correctamente, ejecutando programa. Espere....\n")
             tratarHorasCompleto(fichero, horasMes, certificacion,personal,opcion_seleccionada)
         elif opcion_seleccionada == '3':
-            print("Seleccione el fichero excel con las horas de cierre de mes en escaleras \n")
+            print("Seleccione el fichero excel con las horas en escaleras, hoja1 12 meses y hoja2 mes en curso \n")
             fichero = seleccionar()
             print("Seleccione el fichero excel con las certificaciones \n")
             certificacion = seleccionar()
@@ -57,20 +57,18 @@ def main():
             print("Archivos abiertos correctamente, ejecutando programa. Espere....\n")
             tratarHorasEscaleras(fichero, certificacion, personal, opcion_seleccionada)
         elif opcion_seleccionada == '4':
-            print("Seleccione el fichero excel con las horas en ascensores de cierre de mes \n")
-            fichero = seleccionar()
+            print("Seleccione el fichero excel con las horas en ascensores de cierre de mes\n")
+            horasCierreAsc = seleccionar()
             print("Seleccione el fichero excel con las horas en ascensores del mes en curso\n")
             horasMesAsc = seleccionar()
-            print("Seleccione el fichero excel con las horas en escaleras de cierre de mes \n")
-            horasEscaleras = seleccionar()
-            print("Seleccione el fichero excel con las horas en escaleras del mes en curso\n")
-            horasMesEsc = seleccionar()
+            print("Seleccione el fichero excel con las horas en escaleras \n")
+            horasEsc = seleccionar()
             print("Seleccione el fichero excel con las certificaciones\n")
             certificacion = seleccionar()
             print("Seleccione el fichero excel del personal\n")
             personal= seleccionar()
             print("Archivos abiertos correctamente, ejecutando programa. Espere....\n")
-            tratarHorasCompleto1(fichero, horasMesAsc,horasEscaleras,horasMesEsc, certificacion,personal,opcion_seleccionada)
+            incumplimientosCompleto(horasCierreAsc, horasMesAsc,horasEsc, certificacion,personal,opcion_seleccionada)
         elif opcion_seleccionada == '5':
             imprimirVentana(opcion_seleccionada)
             print("Busque y abre el fichero excel con las NCs\n")

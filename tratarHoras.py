@@ -1,5 +1,4 @@
 import pandas as pd
-import config
 
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
