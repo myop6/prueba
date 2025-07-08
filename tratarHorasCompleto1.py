@@ -22,8 +22,8 @@ def tratarHorasCompleto1(fichero, horasMesAsc,horasEscaleras,horasMesEsc, certif
     if not ruta_salida:
         print("No se seleccionó ruta de salida")
         exit()
-    ascensores.to_excel(ruta_salida, Sheet="Hoja1", index=False)
-    escaleras.to_excel(ruta_salida, Sheet="Hoja2", index=False)
+    ascensores.to_excel(ruta_salida, sheet_name='hoja1', index=False)
+    escaleras.to_excel(ruta_salida, sheet_name='hoja2', index=False)
     
     # Abrir con openpyxl y aplicar formato
     wb = load_workbook(ruta_salida)
