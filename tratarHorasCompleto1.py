@@ -18,5 +18,33 @@ def tratarHorasCompleto1(fichero, horasMesAsc,horasEscaleras,horasMesEsc, certif
   variable1=2
   escaleras=tratarHorasEscaleras(HorasEscaleras,HorasMesEsc,certificacion,personal,opcion_seleccionada)
 
-
-  
+   ruta_salida = seleccionar_ruta()
+    if not ruta_salida:
+        print("No se seleccionó ruta de salida")
+        exit()
+    ascensores.to_excel(ruta_salida, Sheet="Hoja1", index=False)
+    escaleras.to_excel(ruta_salida, Sheet="Hoja2", index=False)
+    
+    # Abrir con openpyxl y aplicar formato
+    wb = load_workbook(ruta_salida)
+    ws = wb.active
+    
+    # Buscar la columna de estado_certificacion
+    for col in ws.iter_cols(1, ws.max_column):
+        if col[0].value == "estado_certificacion":
+            col_idx = col[0].column_letter
+            break
+    
+    # Regla: si contiene "sin", poner en rojo
+    formula = f'ISNUMBER(SEARCH("sin", ${col_idx}2))'
+    red_font = Font(color="9C0006")
+    rule = FormulaRule(formula=[formula], font=red_font)
+    
+    # Aplicar formato desde fila 2 hasta el final
+    ws.conditional_formatting.add(f"{col_idx}2:{col_idx}{ws.max_row}", rule)
+    
+    # Guardar archivo final
+    wb.save(ruta_salida)
+    
+    print("Archivo guardado correctamente")
+    
