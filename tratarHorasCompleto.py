@@ -91,7 +91,7 @@ def tratarHorasCompleto (fichero, fichero1,fichero2,fichero3,opcion_seleccionada
 
     print("Fichero con incumplimientos de certificación creado exitosamennte, seleccione nombre y ubicación ")
 
-    if variable==1:
+    if variable1==1:
         return final_completo
         break()
     
