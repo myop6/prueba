@@ -14,6 +14,7 @@ from tratarHoras import tratarHoras
 from tratarHorasCompleto import tratarHorasCompleto
 from typing import Set
 from incumplimientosCompleto import incumplimientosCompleto
+froma contar impot contar 
 
 warnings.filterwarnings('ignore')
 
@@ -85,6 +86,8 @@ def main():
             completo_rep(archivo_excel,archivo_rep)
         elif opcion_seleccionada == '7':
             break
+        elif opcion_seleccionada==0:
+            contar()
         else:
             print('Error')
 
