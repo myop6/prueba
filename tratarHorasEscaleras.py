@@ -83,7 +83,7 @@ def tratarHorasEscaleras(fichero,fichero1, fichero3, opcion_seleccionada):
     def verificar_nivel(row):
         if ((row["horas_cbk"] > 5 or row['horas_cbk_mes']>1) and row["level"] < 2):
             return "CBK SIN S2"
-        elif ((row["horas_mantenimiento"] > 5 or row['horas_mantenimiento_mes']>1) and row["level"] < 0):
+        elif ((row["horas_mantenimiento"] > 5 or row['horas_mantenimiento_mes']>1) and row["level"] < 1):
             return "MNT SIN S1"
         else:
             return "OK"
