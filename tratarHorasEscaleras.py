@@ -81,9 +81,9 @@ def tratarHorasEscaleras(fichero,fichero1, fichero3, opcion_seleccionada):
 
     # ---------- 5. Aplicar reglas de certificación ----------
     def verificar_nivel(row):
-        if ((row["horas_cbk"] > 3 ||row["horas_cbk_mes"]>1) and row["level"] < 2):
+        if ((row["horas_cbk"] > 5 or row['horas_cbk_mes']>1) and row["level"] < 2):
             return "CBK SIN S2"
-        elif ((row["horas_mantenimiento"] > 1||row["horas_cbk_mes"]>1) and row["level"] < 0):
+        elif ((row["horas_mantenimiento"] > 5 or row['horas_mantenimiento_mes']>1) and row["level"] < 0):
             return "MNT SIN S1"
         else:
             return "OK"
@@ -100,7 +100,7 @@ def tratarHorasEscaleras(fichero,fichero1, fichero3, opcion_seleccionada):
 
     final_completo = pd.merge(final, superPafiltrado, on="id", how="left")
 
-    columnas_ordenadas=["id","nombre completo","job title","job name","horas_mantenimiento_12meses","horas_cbk_12meses","horas_mantenimiento_mes","horas_cbk_mes","level","estado_certificacion","manager user sys id","supervisor","do","dr (dirección regional)","sucursal"]
+    columnas_ordenadas=["id","nombre completo","job title","job name","horas_mantenimiento","horas_cbk","horas_mantenimiento_mes","horas_cbk_mes","level","estado_certificacion","manager user sys id","supervisor","do","dr (dirección regional)","sucursal"]
     final_completo=final_completo[columnas_ordenadas]
 
     if config.variable1==2:

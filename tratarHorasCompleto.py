@@ -69,9 +69,9 @@ def tratarHorasCompleto (fichero, fichero1,fichero2,fichero3,opcion_seleccionada
     final['level']=final['level'].astype(int)
     # ---------- 5. Aplicar reglas de certificación ----------
     def verificar_nivel(row):
-        if ((row["horas_cbk"] > 5 ||row["horas_cbk_mes"]>1) and row["level"] < 2):
+        if ((row["horas_cbk"] > 5 or row['horas_cbk_mes']>1) and row["level"] < 2):
             return "CBK SIN L2"
-        elif ((row["horas_extensivo"] > 5 ||row["horas_extensivo_mes"]>1) and row["level"] < 1):
+        elif ((row["horas_extensivo"] > 3 or row['horas_extensivo_mes']>1) and row["level"] < 1):
             return "EXTENSIVO SIN L1"
         elif row["horas_mantenimiento"] > 1 and row["level"] < 0:
             return "MNT SIN L0"
@@ -89,7 +89,7 @@ def tratarHorasCompleto (fichero, fichero1,fichero2,fichero3,opcion_seleccionada
 
     final_completo=pd.merge(final,superPafiltrado,on="id", how="left")
 
-    columnas_ordenadas=["id","nombre completo","job title","job name","horas_mantenimiento_12meses","horas_extensivo_12meses","horas_cbk_12meses","horas_mantenimiento_mes","horas_extensivo_mes","horas_cbk_mes","level","estado_certificacion","manager user sys id","supervisor","do","dr (dirección regional)","sucursal"]
+    columnas_ordenadas=["id","nombre completo","job title","job name","horas_mantenimiento","horas_extensivo","horas_cbk","horas_mantenimiento_mes","horas_extensivo_mes","horas_cbk_mes","level","estado_certificacion","manager user sys id","supervisor","do","dr (dirección regional)","sucursal"]
     final_completo=final_completo[columnas_ordenadas]
 
     if config.variable1 == 1:
