@@ -1,6 +1,7 @@
 import pandas as pd
 import config
 import warnings
+import tkinter as tk
 
 from completo import completo
 from imprimirVentana import imprimirVentana
@@ -20,17 +21,11 @@ warnings.filterwarnings('ignore')
 
 def main():
 
-    import pandas as pd
-    '''
-    archivo_excel = "/home/ariasmo/Escritorio/NC.xlsx"
-    archivo_rep="/home/ariasmo/Escritorio/REP.xlsx"
-    '''
-
     while True:
 
         opcion_seleccionada=input('Selecciona una opción \n 1.Obtener certificaciones \n 2.Incumplimientos certificación ascensores \n 3.Incumplimientos certificación escaleras \n '
                                   '4.Incumplimientos certificación completo \n 5.Gestión NCs - Completo (Consolida en un fichero NCs y comentarios) \n 6.Gestión NCs - Completo con rep\n 7.Salir\n Introduzca opción:>>>')
-        #archivo_excel=input("Propocione dirección del fichero a tratar: ")
+
 
         if opcion_seleccionada=='1':
             print("Busque y abra el fichero excel con las certificaciones\n")
@@ -46,8 +41,10 @@ def main():
             certificacion = seleccionar()
             print("Seleccione el fichero excel del personal\n")
             personal= seleccionar()
+            print("Seleccione el fichero excel con las notas\n")
+            notas = seleccionar()
             print("Archivos abiertos correctamente, ejecutando programa. Espere....\n")
-            tratarHorasCompleto(fichero, horasMes, certificacion,personal,opcion_seleccionada)
+            tratarHorasCompleto(fichero, horasMes, certificacion,personal,opcion_seleccionada,notas)
         elif opcion_seleccionada == '3':
             print("Seleccione el fichero excel con las horas en escaleras, hoja1 12 meses y hoja2 mes en curso \n")
             fichero = seleccionar()
@@ -55,8 +52,10 @@ def main():
             certificacion = seleccionar()
             print("Seleccione el fichero excel del personal\n")
             personal = seleccionar()
+            print("Seleccione el fichero excel con las notas\n")
+            notas = seleccionar()
             print("Archivos abiertos correctamente, ejecutando programa. Espere....\n")
-            tratarHorasEscaleras(fichero, certificacion, personal, opcion_seleccionada)
+            tratarHorasEscaleras(fichero, certificacion, personal, opcion_seleccionada,notas)
         elif opcion_seleccionada == '4':
             print("Seleccione el fichero excel con las horas en ascensores de cierre de mes\n")
             horasCierreAsc = seleccionar()
@@ -68,8 +67,10 @@ def main():
             certificacion = seleccionar()
             print("Seleccione el fichero excel del personal\n")
             personal= seleccionar()
+            print("Seleccione el fichero excel con las notas\n")
+            notas = seleccionar()
             print("Archivos abiertos correctamente, ejecutando programa. Espere....\n")
-            incumplimientosCompleto(horasCierreAsc, horasMesAsc,horasEsc, certificacion,personal,opcion_seleccionada)
+            incumplimientosCompleto(horasCierreAsc, horasMesAsc,horasEsc, certificacion,personal,opcion_seleccionada,notas)
         elif opcion_seleccionada == '5':
             imprimirVentana(opcion_seleccionada)
             print("Busque y abre el fichero excel con las NCs\n")
@@ -91,7 +92,6 @@ def main():
             contar(cantidad)
         else:
             print('Error')
-
 
 
 if __name__=="__main__":

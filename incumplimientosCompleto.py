@@ -13,19 +13,19 @@ from tratar_certificaciones import tratar_certificaciones
 from tratarHorasCompleto import tratarHorasCompleto
 from tratarHorasEscaleras import tratarHorasEscaleras
 
-def incumplimientosCompleto(horasCierreAsc,horasMesAsc,horasEsc,certificacion,personal,opcion_seleccionada):
+def incumplimientosCompleto(horasCierreAsc,horasMesAsc,horasEsc,certificacion,personal,opcion_seleccionada,notas):
     config.variable1=1
-    ascensores=tratarHorasCompleto(horasCierreAsc,horasMesAsc,certificacion,personal,opcion_seleccionada)
+    ascensores=tratarHorasCompleto(horasCierreAsc,horasMesAsc,certificacion,personal,opcion_seleccionada,notas)
     config.variable1=2
-    escaleras=tratarHorasEscaleras(horasEsc,certificacion,personal,opcion_seleccionada)
+    escaleras=tratarHorasEscaleras(horasEsc,certificacion,personal,opcion_seleccionada,notas)
 
-    print("\n Fichero con las desviaciones en las certificaciones creado correctamente. Seleccione nombre para el guardado\n")
+    print("\nFichero con las desviaciones en las certificaciones creado correctamente. Seleccione nombre para el guardado\n")
     ruta_salida = seleccionar_ruta()
 
     if ruta_salida:
         with pd.ExcelWriter(ruta_salida) as writer:
-            ascensores.to_excel(writer, sheet_name='hoja1', index=False)
-            escaleras.to_excel(writer, sheet_name='hoja2', index=False)
+            ascensores.to_excel(writer, sheet_name='Ascensores', index=False)
+            escaleras.to_excel(writer, sheet_name='Escaleras', index=False)
 
     else:
         print('Guardado cancelado\n')
@@ -35,8 +35,8 @@ def incumplimientosCompleto(horasCierreAsc,horasMesAsc,horasEsc,certificacion,pe
     # Abrir con openpyxl y aplicar formato
     wb = load_workbook(ruta_salida,)
 
-    for hoja in wb.sheetnames:
-        ws = wb.active
+    for sheet in wb.sheetnames:
+        ws = wb[sheet]
         # Buscar la columna de estado_certificacion
         for col in ws.iter_cols(1, ws.max_column):
             if col[0].value == "estado_certificacion":

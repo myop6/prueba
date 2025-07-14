@@ -12,22 +12,25 @@ from tratarHoras import tratarHoras
 from tratar_certificaciones import tratar_certificaciones
 
 
-def tratarHorasCompleto (fichero, fichero1,fichero2,fichero3,opcion_seleccionada):
+def tratarHorasCompleto (fichero, fichero1,fichero2,fichero3,opcion_seleccionada,notas):
 
     horasTratadas=tratarHoras(fichero,opcion_seleccionada)
     # ---------- 1. Cargar resumen 12 meses ----------
     resumen = horasTratadas
+
+    df_notas=pd.read_excel(notas)
+    df_notas.columns=df_notas.columns.str.strip().str.lower()
 
     # ---------- 2. Cargar horas del mes actual ----------
     mes_actual = pd.read_excel(fichero1)
     '''mes_actual["Activity"] = mes_actual["Activity"].str.strip().str.lower()'''
     mes_actual.rename(columns={"Nº Personal":"id"}, inplace=True)
     mes_actual.columns = mes_actual.columns.str.strip().str.lower()
-
+    '''
     pd.set_option('display.max_columns',None)
     pd.set_option('display.width', None)
     pd.set_option('display.max_colwidth', None)
-    '''print(mes_actual.head())
+    print(mes_actual.head())
     print(resumen.head())'''
 
     # Crear columnas de tipo de actividad
@@ -42,7 +45,9 @@ def tratarHorasCompleto (fichero, fichero1,fichero2,fichero3,opcion_seleccionada
         "horas_cbk": "sum",
         "horas_extensivo": "sum",
     }).reset_index()
-    
+
+    final=resumen
+
     # ---------- 3. Unir los resúmenes ----------
     final = pd.merge(resumen, resumen_mes, on="id", how="outer", suffixes=("_12meses", "_mes"))
     final = final.fillna(0)
@@ -71,7 +76,7 @@ def tratarHorasCompleto (fichero, fichero1,fichero2,fichero3,opcion_seleccionada
     def verificar_nivel(row):
         if ((row["horas_cbk"] > 5 or row['horas_cbk_mes']>1) and row["level"] < 2):
             return "CBK SIN L2"
-        elif ((row["horas_extensivo"] > 3 or row['horas_extensivo_mes']>1) and row["level"] < 1):
+        elif ((row["horas_extensivo"] > 5 or row['horas_extensivo_mes']>1) and row["level"] < 1):
             return "EXTENSIVO SIN L1"
         elif row["horas_mantenimiento"] > 1 and row["level"] < 0:
             return "MNT SIN L0"
@@ -83,14 +88,19 @@ def tratarHorasCompleto (fichero, fichero1,fichero2,fichero3,opcion_seleccionada
     #Datos del ficheor de personal
 
     superPa=pd.read_excel(fichero3)
-    superPa.rename(columns={"User/Employee ID":"id"}, inplace=True)
+    superPa.rename(columns={"User/Employee ID":"id","Manager User Sys ID":"id_jefe","Business  Email Information Email Address":"correo"}, inplace=True)
     superPa.columns=superPa.columns.str.strip().str.lower()
-    superPafiltrado=superPa[["id","nombre completo","job title","job name","manager user sys id","supervisor","do","dr (dirección regional)","sucursal"]]
+    superPafiltrado=superPa[["id","nombre completo","job title","job name","id_jefe","supervisor","do","dr (dirección regional)","sucursal"]]
+    df_jefes=superPa[["id","correo"]].drop_duplicates()
+    df_jefes=df_jefes.rename(columns={"id":"id_jefe","correo":"correo_jefe"})
 
     final_completo=pd.merge(final,superPafiltrado,on="id", how="left")
+    final_completo=final_completo.merge(df_jefes, on="id_jefe", how="left")
 
-    columnas_ordenadas=["id","nombre completo","job title","job name","horas_mantenimiento","horas_extensivo","horas_cbk","horas_mantenimiento_mes","horas_extensivo_mes","horas_cbk_mes","level","estado_certificacion","manager user sys id","supervisor","do","dr (dirección regional)","sucursal"]
+    columnas_ordenadas=["id","nombre completo","job title","job name","horas_mantenimiento","horas_extensivo","horas_cbk","horas_mantenimiento_mes","horas_extensivo_mes","horas_cbk_mes","level","estado_certificacion","id_jefe","supervisor","do","dr (dirección regional)","sucursal","correo_jefe"]
     final_completo=final_completo[columnas_ordenadas]
+
+    final_completo=final_completo.merge(df_notas,on="id",how="left")
 
     if config.variable1 == 1:
         return final_completo

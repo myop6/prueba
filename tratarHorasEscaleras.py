@@ -11,12 +11,15 @@ from tratarHoras import tratarHoras
 from tratar_certificaciones import tratar_certificaciones
 
 
-def tratarHorasEscaleras(fichero,fichero1, fichero3, opcion_seleccionada):
+def tratarHorasEscaleras(fichero,fichero1, fichero3, opcion_seleccionada,notas):
     # Leer el archivo Excel
     df = pd.read_excel(fichero, sheet_name="Hoja1")
     mes_actual = pd.read_excel(fichero, sheet_name="Hoja2")
     df.rename(columns={"Tecnico":"id","MNT":"mantenimiento"},inplace=True)
     df.columns=df.columns.str.strip().str.lower()
+
+    df_notas = pd.read_excel(notas)
+    df_notas.columns = df_notas.columns.str.strip().str.lower()
 
     df["horas_cbk"] = df["cbk"]
     '''df["horas_extensivo"] = df["extensivo"]'''
@@ -93,16 +96,24 @@ def tratarHorasEscaleras(fichero,fichero1, fichero3, opcion_seleccionada):
     # Datos del ficheor de personal
 
     superPa = pd.read_excel(fichero3)
-    superPa.rename(columns={"User/Employee ID": "id"}, inplace=True)
+    superPa.rename(columns={"User/Employee ID": "id","Manager User Sys ID":"id_jefe","Business  Email Information Email Address":"correo"}, inplace=True)
     superPa.columns = superPa.columns.str.strip().str.lower()
-    superPafiltrado = superPa[["id", "nombre completo","job title", "job name", "manager user sys id", "supervisor", "do", "dr (dirección regional)",
+    superPafiltrado = superPa[["id", "nombre completo","job title", "job name", "id_jefe", "supervisor", "do", "dr (dirección regional)",
          "sucursal"]]
+    df_jefes = superPa[["id", "correo"]].drop_duplicates()
+    df_jefes = df_jefes.rename(columns={"id": "id_jefe", "correo": "correo_jefe"})
 
     final_completo = pd.merge(final, superPafiltrado, on="id", how="left")
+    final_completo = final_completo.merge(df_jefes, on="id_jefe", how="left")
 
-    columnas_ordenadas=["id","nombre completo","job title","job name","horas_mantenimiento","horas_cbk","horas_mantenimiento_mes","horas_cbk_mes","level","estado_certificacion","manager user sys id","supervisor","do","dr (dirección regional)","sucursal"]
+
+
+    columnas_ordenadas=["id","nombre completo","job title","job name","horas_mantenimiento","horas_cbk","horas_mantenimiento_mes","horas_cbk_mes","level","estado_certificacion","id_jefe","supervisor","do","dr (dirección regional)","sucursal","correo_jefe"]
+
     final_completo=final_completo[columnas_ordenadas]
 
+    final_completo = final_completo.merge(df_notas, on="id", how="left")
+    
     if config.variable1==2:
         return final_completo
 
@@ -113,6 +124,7 @@ def tratarHorasEscaleras(fichero,fichero1, fichero3, opcion_seleccionada):
     if not ruta_salida:
         print("No se seleccionó ruta de salida")
         exit()
+
     final_completo.to_excel(ruta_salida, index=False)
 
     # Abrir con openpyxl y aplicar formato
