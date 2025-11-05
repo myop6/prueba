@@ -2,6 +2,11 @@ import pandas as pd
 import config
 import warnings
 import tkinter as tk
+import sys
+import os
+import json
+from pathlib import Path
+
 
 from completo import completo
 from imprimirVentana import imprimirVentana
