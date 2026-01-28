@@ -16,7 +16,7 @@ from tratarHorasEscaleras import tratarHorasEscaleras
 
 def tratarHorasCompleto1(fichero, horasMesAsc,horasEscaleras,horasMesEsc, certificacion,personal,opcion_seleccionada):
 
-  variable1=1;
+  variable1=1
   ascensores=tratarHorasCompleto(fichero, horasMesAsc,certificacion,personal,opcion_seleccionada)
   variable1=2
   escaleras=tratarHorasEscaleras(HorasEscaleras,HorasMesEsc,certificacion,personal,opcion_seleccionada)
